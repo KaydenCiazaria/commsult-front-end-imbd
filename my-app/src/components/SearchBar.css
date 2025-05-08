@@ -1,54 +1,64 @@
-.search-bar {
-    display: flex;
-    width: 50%;
-    min-width: 300px;
-  }
-  
-  .search-input {
-    flex-grow: 1;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px 0 0 4px;
-    font-size: 1rem;
-    background-color: #333;
-    color: white;
-  }
-  
-  .search-input:focus {
-    outline: 2px solid #f5c518;
-  }
-  
-  .search-button {
-    padding: 0 1.2rem;
-    background-color: #f5c518;
-    color: #000;
-    border: none;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .search-button:hover {
-    background-color: #ffd700;
-  }
-  
-  .search-button svg {
-    width: 20px;
-    height: 20px;
-  }
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+}
 
-  .spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(0,0,0,0.3);
-    border-radius: 50%;
-    border-top-color: #000;
-    animation: spin 1s ease-in-out infinite;
+.search-container input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.search-container input:focus {
+  border-color: #007bff;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  max-height: 250px;
+  overflow-y: auto;
+  border-radius: 0 0 8px 8px;
+  z-index: 1000;
+}
+
+.suggestions-list li {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestions-list li:hover {
+  background-color: #f1f1f1;
+}
+
+/* Spinner styles */
+.spinner {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ccc;
+  border-top-color: #007bff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+}

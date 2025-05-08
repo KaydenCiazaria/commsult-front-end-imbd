@@ -4,16 +4,15 @@ import './MovieCard.css';
 
 function MovieCard({ movie }) {
   return (
-    <Link to={`/movie/${movie.id}`} className="movie-card-link">
-      <div className="movie-card">
-        <div className="movie-poster">
-          <img src={movie.poster} alt={movie.title} />
-        </div>
-        <div className="movie-info">
-          <h3>{movie.title}</h3>
-          <p>Year: {movie.year}</p>
-          <p>Director: {movie.director}</p>
-        </div>
+    <Link to={`/movie/${movie._id}`} className="movie-card">
+      <img 
+        src={`/images/${movie.thumb}`} 
+        alt={movie.title}
+        className="movie-thumbnail"
+      />
+      <div className="movie-info">
+        <h3>{movie.title}</h3>
+        <p>{new Date(movie.date).getFullYear()}</p>
       </div>
     </Link>
   );
