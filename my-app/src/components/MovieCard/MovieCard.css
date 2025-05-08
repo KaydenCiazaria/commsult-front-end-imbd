@@ -1,0 +1,19 @@
+.movie-card {
+    background-color: #222;
+    color: white;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 5px;
+    width: 200px;
+  }
+  
+  .movie-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: #f5c518;
+  }
+  
+  .movie-card .director {
+    margin: 0;
+    color: #aaa;
+    font-size: 0.9rem;
+  }
