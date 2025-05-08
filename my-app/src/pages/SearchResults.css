@@ -1,0 +1,29 @@
+.search-results-page {
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    color: white;
+  }
+  
+  .search-results-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+  }
+  
+  .search-results-container h2 {
+    color: #f5c518;
+    margin-bottom: 2rem;
+  }
+  
+  .no-results {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ccc;
+  }
+  
+  .movies-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
