@@ -1,57 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import tempMovies from '../data/movies'; // Your existing temp data
+import axios from 'axios';
 import './SearchBar.css';
 
 function SearchBar() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
+  useEffect(() => {
+    if (query.length < 2) {
+      setSuggestions([]);
+      return;
+    }
 
-    setIsLoading(true);
+    const fetchSuggestions = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get('http://localhost:3000/api/user/autocomplete', {
+          params: { query } // Changed from 'q' to 'query' to match your API
+        });
+        console.log('API Response:', response.data); // Debug log
+        setSuggestions(response.data);
+      } catch (error) {
+        console.error("Auto-complete failed:", error);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+          console.error("Status code:", error.response.status);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    // SIMULATE API DELAY
-    setTimeout(() => {
-      // Local search logic
-      const results = tempMovies.filter(movie => 
-        movie.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        movie.director.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        movie.genre.some(g => g.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-      
-      navigate('/search', { state: { results, query: searchQuery } });
-      setIsLoading(false);
-    }, 500); // 0.5s delay to simulate network
+    const debounceTimer = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(debounceTimer);
+  }, [query]);
+
+  const handleSelect = (movie) => {
+    navigate(`/movie/${movie._id}`);
+    setQuery('');
+    setSuggestions([]);
   };
 
   return (
-    <form className="search-bar" onSubmit={handleSearch}>
-      <input 
-        type="text" 
-        placeholder="Search movies..." 
-        className="search-input"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        disabled={isLoading}
+    <div className="search-container">
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search movies..."
       />
-      <button 
-        type="submit" 
-        className="search-button"
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <span className="spinner"></span> // Add CSS for this
-        ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            {/* Search icon */}
-          </svg>
-        )}
-      </button>
-    </form>
+      {isLoading && <div className="spinner"></div>}
+      {suggestions.length > 0 && (
+        <ul className="suggestions-list">
+          {suggestions.map((movie) => (
+            <li key={movie._id} onClick={() => handleSelect(movie)}>
+              {movie.title}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 

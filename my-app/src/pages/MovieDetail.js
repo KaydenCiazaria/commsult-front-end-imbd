@@ -1,45 +1,51 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../components/Header';
-import tempMovies from '../data/movies';
 import './MovieDetail.css';
 
 function MovieDetail() {
   const { id } = useParams();
-  const movie = tempMovies.find(movie => movie.id === parseInt(id));
+  const [movie, setMovie] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!movie) {
-    return (
-      <div className="movie-detail">
-        <Header />
-        <div className="not-found">Movie not found</div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/user/movie/${id}`);
+        setMovie(response.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMovie();
+  }, [id]);
+
+  if (isLoading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
+  if (!movie) return <div>Movie not found</div>;
 
   return (
-    <div className="movie-detail-page">
-      <Header />
-      <div className="movie-detail-container">
-        <div className="movie-poster">
-          <img src={movie.poster} alt={movie.title} />
-        </div>
-        <div className="movie-info">
-          <h1>{movie.title} ({movie.year})</h1>
-          <div className="movie-meta">
-            <span>{movie.duration}</span>
-            <span>Rating: {movie.rating}/10</span>
-            <span>Director: {movie.director}</span>
-          </div>
-          <div className="movie-genres">
-            {movie.genre.map((genre, index) => (
-              <span key={index} className="genre-tag">{genre}</span>
-            ))}
-          </div>
-          <p className="movie-description">{movie.description}</p>
-          <Link to="/" className="back-button">Back to Home</Link>
-        </div>
+    <div> 
+      
+    <Header />
+    <div className="movie-detail">
+      
+      <img 
+        src={`/images/${movie.thumb}`} 
+        alt={movie.title} 
+        className="movie-poster"
+      />
+      <div className="movie-info">
+        <h1>{movie.title} ({new Date(movie.date).getFullYear()})</h1>
+        <p><strong>Director:</strong> {movie.director}</p>
+        <p><strong>Rating:</strong> {movie.rating}/10</p>
       </div>
+    </div>
     </div>
   );
 }
