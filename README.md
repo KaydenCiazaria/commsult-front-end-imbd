@@ -1,6 +1,6 @@
 # 🎬 IMDB-Style Frontend Web Application
 
-This project si a responsive film discovery platform built with React. The application provides an intuitive user interface to explore real-time movies, execute dynamic text searches, and view detailed cinematic data. 
+This project is a responsive film discovery platform built with React. The application provides an intuitive user interface to explore real-time movies, execute dynamic text searches, and view detailed cinematic data. 
 
 This repository houses the frontend architecture, engineered with modular functional components, robust state handling, and RESTful API communications.
 
