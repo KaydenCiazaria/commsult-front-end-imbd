@@ -8,7 +8,6 @@ This repository houses the frontend architecture, engineered with modular functi
 
 *   **UI Framework:** React (Functional Components & Hooks)
 *   **API Client:** Axios (configured with reusable HTTP interceptors)
-*   
 ---
 
 ## 🏗️ Architectural Highlights
